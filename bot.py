@@ -6,7 +6,7 @@ from telegram.ext import (
     ContextTypes
 )
 
-# এখানে তোমার Bot Token বসাও
+# তোমার Bot Token এখানে বসাও
 BOT_TOKEN = "8801340067:AAHfr7kYq_wBP1dzbtgP8XRI2xi8B45LYS0"
 
 
@@ -36,29 +36,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 """
 
     keyboard = [
-        [
-            InlineKeyboardButton("📚 সকল কমান্ড", callback_data="commands")
-        ],
-        [
-            InlineKeyboardButton("🌐 Hosting Guide", callback_data="hosting")
-        ],
-        [
-            InlineKeyboardButton("💻 GitHub System", callback_data="github")
-        ],
-        [
-            InlineKeyboardButton("🆘 সাপোর্ট", callback_data="support")
-        ]
+        [InlineKeyboardButton("📚 সকল কমান্ড", callback_data="commands")],
+        [InlineKeyboardButton("🌐 Hosting Guide", callback_data="hosting")],
+        [InlineKeyboardButton("💻 GitHub System", callback_data="github")],
+        [InlineKeyboardButton("🆘 সাপোর্ট", callback_data="support")]
     ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    await update.message.reply_text(
-        text,
-        reply_markup=reply_markup
-    )
+    await update.message.reply_text(text, reply_markup=reply_markup)
 
 
-# বাটন সিস্টেম
+# Callback buttons
 async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     query = update.callback_query
@@ -66,123 +55,90 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     data = query.data
 
-    # Commands
     if data == "commands":
-
         text = """
-╔══❖•ೋ° 📚 °ೋ•❖══╗
-        সকল কমান্ড
-╚══❖•ೋ° 📚 °ೋ•❖══╝
+📚 সকল কমান্ড
 
 /start - বট চালু করুন
 /help - সাহায্য দেখুন
 /ping - বট অনলাইন কিনা দেখুন
 /about - বট সম্পর্কে জানুন
-
-✅ আরো নতুন ফিচার শীঘ্রই আসবে
 """
 
-    # Hosting
     elif data == "hosting":
-
         text = """
-╔══❖•ೋ° 🌐 °ೋ•❖══╗
-      Hosting Guide
-╚══❖•ೋ° 🌐 °ೋ•❖══╝
+🌐 Hosting Guide
 
-✅ GitHub এ কোড আপলোড করুন
+1️⃣ GitHub এ কোড আপলোড করুন
+2️⃣ Render এ GitHub connect করুন
+3️⃣ Deploy চাপুন
 
-✅ Render এ GitHub Connect করুন
-
-✅ Background Worker Select করুন
-
-✅ Deploy Button চাপুন
-
-🚀 আপনার বট 24/7 অনলাইন থাকবে
+🚀 24/7 bot online থাকবে
 """
 
-    # GitHub
     elif data == "github":
-
         text = """
-╔══❖•ೋ° 💻 °ೋ•❖══╗
-      GitHub System
-╚══❖•ೋ° 💻 °ೋ•❖══╝
+💻 GitHub System
 
-1️⃣ GitHub এ Repository তৈরি করুন
-
-2️⃣ bot.py Upload করুন
-
-3️⃣ requirements.txt Upload করুন
-
-4️⃣ Render এ Deploy করুন
-
-✅ Done Successfully 🚀
+1️⃣ Repository তৈরি করুন
+2️⃣ bot.py upload করুন
+3️⃣ requirements.txt যোগ করুন
+4️⃣ Render deploy করুন
 """
 
-    # Support
     elif data == "support":
-
         text = """
-╔══❖•ೋ° 🆘 °ೋ•❖══╗
-         Support
-╚══❖•ೋ° 🆘 °ೋ•❖══╝
+🆘 Support
 
-👨‍💻 Owner : @YourUsername
-
-📩 কোন সমস্যা হলে Owner কে মেসেজ করুন
-
-ধন্যবাদ ❤️
+👨‍💻 Owner: @YourUsername
+📩 সমস্যা হলে message করুন
 """
+
+    else:
+        text = "Invalid option"
 
     await query.message.reply_text(text)
 
 
-# /help কমান্ড
+# /help
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
-    await update.message.reply_text(
-        "📌 Help Menu দেখতে /start ব্যবহার করুন"
-    )
+    await update.message.reply_text("📌 /start ব্যবহার করুন")
 
 
-# /ping কমান্ড
+# /ping
 async def ping(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
-    await update.message.reply_text(
-        "🏓 Bot বর্তমানে অনলাইনে আছে ✅"
-    )
+    await update.message.reply_text("🏓 Bot online আছে ✅")
 
 
-# /about কমান্ড
+# /about
 async def about(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
     text = """
-🤖 Bot Information
+🤖 Bot Info
 
-📌 বাংলা Telegram Help Bot
-📌 তৈরি করা হয়েছে Python দিয়ে
-📌 Hosting : Render
-📌 Source : GitHub
-
-🚀 Fast & Simple Bot
+📌 Python Telegram Bot
+📌 Hosting Ready
+📌 Simple & Fast
 """
-
     await update.message.reply_text(text)
 
 
-# MAIN SYSTEM
-app = ApplicationBuilder().token(BOT_TOKEN).build()
+# ================= MAIN SYSTEM =================
 
-# Handlers
-app.add_handler(CommandHandler("start", start))
-app.add_handler(CommandHandler("help", help_command))
-app.add_handler(CommandHandler("ping", ping))
-app.add_handler(CommandHandler("about", about))
+def main():
+    app = ApplicationBuilder().token(BOT_TOKEN).build()
 
-app.add_handler(CallbackQueryHandler(buttons))
+    # Handlers
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("help", help_command))
+    app.add_handler(CommandHandler("ping", ping))
+    app.add_handler(CommandHandler("about", about))
+    app.add_handler(CallbackQueryHandler(buttons))
 
-print("✅ Bot Running Successfully...")
+    print("✅ Bot Running Successfully...")
 
-# Bot Start
-app.run_polling()
+    app.run_polling()
+
+
+# ✅ ENTRYPOINT FIX (এটাই তোমার error fix করবে)
+if __name__ == "__main__":
+    main()
