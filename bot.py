@@ -7,7 +7,7 @@ from telegram.ext import (
 )
 
 # এখানে তোমার Bot Token বসাও
-BOT_TOKEN = "YOUR_BOT_TOKEN"
+BOT_TOKEN = "8801340067:AAHfr7kYq_wBP1dzbtgP8XRI2xi8B45LYS0"
 
 
 # /start কমান্ড
